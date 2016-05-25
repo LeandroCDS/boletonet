@@ -441,7 +441,12 @@ namespace BoletoNet
                 _detalhe.Append("00000"); //Posição 090 a 094
                 _detalhe.Append("0"); //Posição 095
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.NumeroBordero.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 096 a 101
-                _detalhe.Append(new string(' ', 5)); //Posição 102 a 106
+                _detalhe.Append(new string(' ', 4)); //Posição 102 a 105
+                if (boleto.NossoNumero == "".PadRight(12, '0')) // Posicao 106 - Tipo de Emissao
+                    _detalhe.Append("1"); //cooperativa
+                else
+                    _detalhe.Append("2"); //cliente
+
                 _detalhe.Append(Utils.FitStringLength(boleto.TipoModalidade, 2, 2, '0', 0, true, true, true));  //Posição 107 a 108
                 _detalhe.Append("01"); //Posição 109 a 110 - REGISTRO DE TITULOS
                 _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
@@ -458,7 +463,11 @@ namespace BoletoNet
                 _detalhe.Append("22"); //Posição 159 a 160 - PERMITIR DESCONTO SOMENTE ATE DATA ESTIPULADA
                 _detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercJurosMora * 10000).ToString(), 6, 6, '0', 1, true, true, true)); //Posição 161 a 166
                 _detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercMulta * 10000).ToString(), 6, 6, '0', 1, true, true, true)); //Posição 167 a 172
-                _detalhe.Append(" "); //Posição 173
+                if (boleto.NossoNumero == "".PadRight(12, '0')) // Posicao 173 - Tipo Distribuição
+                    _detalhe.Append("1"); //cooperativa
+                else
+                    _detalhe.Append("2"); //cliente
+
                 _detalhe.Append(Utils.FitStringLength((boleto.DataDesconto == DateTime.MinValue ? "0" : boleto.DataDesconto.ToString("ddMMyy")), 6, 6, '0', 0, true, true, true)); //Posição 174 a 179
                 _detalhe.Append(Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true)); //Posição 180 a 192
                 _detalhe.Append("9" + Utils.FitStringLength(boleto.IOF.ToString("0.00").Replace(",", ""), 12, 12, '0', 0, true, true, true)); //Posição 193 a 205
